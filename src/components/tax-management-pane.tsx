@@ -54,16 +54,12 @@ export function TaxManagementPane({
   };
 
   const formatRate = (rate: number) => {
-    return `${(rate * 100).toFixed(2)}%`;
+    const percentage = rate * 100;
+    // Show up to 3 decimal places, but remove trailing zeros
+    return `${parseFloat(percentage.toFixed(3))}%`;
   };
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(date));
-  };
+
 
   return (
     <div className="space-y-6">
@@ -107,37 +103,16 @@ export function TaxManagementPane({
                   <TableRow>
                     <TableHead>Name</TableHead>
                     <TableHead>Rate</TableHead>
-                    <TableHead>Region</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {taxRates.map((taxRate) => (
                     <TableRow key={taxRate.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{taxRate.name}</div>
-                          {taxRate.description && (
-                            <div className="text-sm text-gray-500">{taxRate.description}</div>
-                          )}
-                        </div>
+                      <TableCell className="font-medium">
+                        {taxRate.name}
                       </TableCell>
-                      <TableCell className="font-mono">{formatRate(taxRate.rate)}</TableCell>
-                      <TableCell>{taxRate.region}</TableCell>
-                      <TableCell className="capitalize">{taxRate.category}</TableCell>
-                      <TableCell>
-                        <span
-                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            taxRate.isActive
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          {taxRate.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                      </TableCell>
+                      <TableCell className="font-mono text-lg">{formatRate(taxRate.rate)}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button

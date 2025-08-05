@@ -49,7 +49,7 @@ export default function Home() {
 
 
 
-  const activeTaxRates = taxRates.filter(rate => rate.isActive);
+  const activeTaxRates = taxRates; // All tax rates are now considered active
 
   if (loading) {
     return (
