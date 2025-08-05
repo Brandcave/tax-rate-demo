@@ -1,6 +1,7 @@
 import { TaxRate, TaxRateFormData, AutoTaxRateSelection } from '@/types/tax-rate';
 
 // Mock data storage - in a real app, this would be a database
+// eslint-disable-next-line prefer-const
 let taxRates: TaxRate[] = [
   {
     id: '1',
@@ -99,7 +100,7 @@ export const taxRateService = {
   },
 
   // Auto-select tax rate based on invoice address (simulation)
-  autoSelectTaxRate: (invoiceRegion?: string, taxType?: string): TaxRate | null => {
+  autoSelectTaxRate: (): TaxRate | null => {
     // Simulate looking up tax rate based on invoice address
     // In real implementation, this would call a tax service API like Avalara or TaxJar
     

@@ -5,7 +5,7 @@ import { TaxManagementPane } from '@/components/tax-management-pane';
 import { TaxCalculatorPane } from '@/components/tax-calculator-pane';
 import { TaxRate, TaxRateFormData } from '@/types/tax-rate';
 import { taxRateService } from '@/lib/tax-rate-service';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
 
 export default function Home() {
   const [taxRates, setTaxRates] = useState<TaxRate[]>([]);

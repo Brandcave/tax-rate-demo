@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect, useCallback } from 'react';
+
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -47,13 +47,13 @@ export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPa
     }
   };
 
-  const handleAutoSelect = () => {
+  const handleAutoSelect = useCallback(() => {
     // Simulate looking up tax rate based on invoice address
     const autoSelectedRate = taxRateService.autoSelectTaxRate();
     if (autoSelectedRate) {
       calculateTax(amount, autoSelectedRate, true);
     }
-  };
+  }, [amount]);
 
   const calculateTax = (baseAmount: number, taxRate: TaxRate, isAutoSelected: boolean = false) => {
     const taxAmount = baseAmount * taxRate.rate;
@@ -107,7 +107,7 @@ export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPa
     if (selectedTaxRateId === 'auto') {
       handleAutoSelect();
     }
-  }, [selectedTaxRateId]);
+  }, [selectedTaxRateId, handleAutoSelect]);
 
   return (
     <div className="space-y-6">
