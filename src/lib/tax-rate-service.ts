@@ -101,10 +101,16 @@ export const taxRateService = {
   // Auto-select tax rate based on invoice address (simulation)
   autoSelectTaxRate: (invoiceRegion?: string, taxType?: string): TaxRate | null => {
     // Simulate looking up tax rate based on invoice address
-    // In real implementation, this would call a tax service API
+    // In real implementation, this would call a tax service API like Avalara or TaxJar
     
-    // For now, just return the first available tax rate as a simple simulation
-    // In a real app, this would use the invoice address to determine the correct rate
-    return taxRates.length > 0 ? taxRates[0] : null;
+    // Return a simulated tax rate that's not in the user's account
+    // This represents what a real tax service would return based on address lookup
+    return {
+      id: 'auto-lookup-result',
+      name: 'Seattle, WA Sales Tax',
+      rate: 0.1025, // 10.25% - realistic Seattle tax rate
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
   },
 };

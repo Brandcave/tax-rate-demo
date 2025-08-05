@@ -17,8 +17,8 @@ interface TaxCalculatorPaneProps {
 }
 
 export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPaneProps) {
-  const [selectedTaxRateId, setSelectedTaxRateId] = useState<string>('');
-  const [amount, setAmount] = useState<number>(0);
+  const [selectedTaxRateId, setSelectedTaxRateId] = useState<string>('auto');
+  const [amount, setAmount] = useState<number>(100);
   const [calculationResult, setCalculationResult] = useState<{
     taxAmount: number;
     totalAmount: number;
@@ -119,15 +119,28 @@ export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPa
         </div>
       </div>
 
-      {/* Tax Rate Selection */}
+      {/* Amount Input */}
       <Card>
         <CardHeader>
-          <CardTitle>Select Tax Rate</CardTitle>
+          <CardTitle>Calculate Tax</CardTitle>
           <CardDescription>
-            Choose a specific tax rate or use automatic selection
+            Enter an amount and select tax rate
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div>
+            <label className="text-sm font-medium mb-2 block">
+              Base Amount ($)
+            </label>
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="100.00"
+              value={amount || ''}
+              onChange={(e) => handleAmountChange(parseFloat(e.target.value) || 0)}
+            />
+          </div>
+
           <div>
             <label className="text-sm font-medium mb-2 block">
               Tax Rate
@@ -166,57 +179,29 @@ export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPa
             </Select>
           </div>
 
-          {/* Invoice Address Simulation for Auto Selection */}
-          {selectedTaxRateId === 'auto' && (
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <div className="mb-3">
-                <h4 className="text-sm font-medium text-blue-900 mb-1">Automatic Tax Rate Selection</h4>
-                <p className="text-xs text-blue-700">Tax rate will be automatically determined based on invoice address</p>
-              </div>
-              <div className="text-center py-4">
-                <div className="text-blue-600">
-                  <RefreshCw className="h-8 w-8 mx-auto mb-2" />
-                  <p className="text-sm">Simulating address lookup...</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
-      {/* Amount Input and Calculation */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Calculate Tax</CardTitle>
-          <CardDescription>
-            Enter an amount to calculate taxes
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="text-sm font-medium mb-2 block">
-              Base Amount ($)
-            </label>
-            <Input
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={amount || ''}
-              onChange={(e) => handleAmountChange(parseFloat(e.target.value) || 0)}
-            />
-          </div>
 
           {calculationResult && calculationResult.appliedRate && (
             <div className="border rounded-lg p-4 bg-gray-50">
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-4">
                 <Calculator className="h-4 w-4 mr-2" />
-                <span className="font-medium">Calculation Results</span>
+                <span className="font-medium">Order Summary</span>
                 {calculationResult.isAutoSelected && (
                   <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     <RefreshCw className="h-3 w-3 mr-1" />
                     Auto-Selected
                   </span>
                 )}
+              </div>
+
+              {/* Customer Address */}
+              <div className="mb-4 p-3 bg-white rounded border">
+                <div className="text-xs font-medium text-gray-500 mb-1">CUSTOMER ADDRESS</div>
+                <div className="text-sm">
+                  <div>Acme Corp</div>
+                  <div>1234 Pine Street</div>
+                  <div>Seattle, WA 98101</div>
+                </div>
               </div>
               
               <div className="space-y-2 text-sm">
@@ -227,24 +212,24 @@ export function TaxCalculatorPane({ taxRates, onCreateTaxRate }: TaxCalculatorPa
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Base Amount:</span>
+                  <span>Subtotal:</span>
                   <span>{formatCurrency(amount)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Tax Amount:</span>
+                  <span>Tax:</span>
                   <span>{formatCurrency(calculationResult.taxAmount)}</span>
                 </div>
-                <div className="border-t pt-2 flex justify-between font-medium">
-                  <span>Total Amount:</span>
+                <div className="border-t pt-2 flex justify-between font-medium text-lg">
+                  <span>Total:</span>
                   <span>{formatCurrency(calculationResult.totalAmount)}</span>
                 </div>
               </div>
             </div>
           )}
 
-          {!selectedTaxRateId && (
+          {!calculationResult && (
             <div className="text-center py-8 text-gray-500">
-              Select a tax rate to see calculation results
+              Enter an amount to see calculation results
             </div>
           )}
         </CardContent>

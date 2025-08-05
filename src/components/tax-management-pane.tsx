@@ -112,7 +112,7 @@ export function TaxManagementPane({
                       <TableCell className="font-medium">
                         {taxRate.name}
                       </TableCell>
-                      <TableCell className="font-mono text-lg">{formatRate(taxRate.rate)}</TableCell>
+                      <TableCell>{formatRate(taxRate.rate)}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button
